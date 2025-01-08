@@ -11,8 +11,8 @@ public class GameBoard {
 
     public static final int ROWS = 4;
     public static final int COLS = 4;
-    Color game_border,gameTile_background;
-    private final int startingTiles = 2;
+    private Color game_border,gameTile_background;
+    private final int STARTINGTILES = 2;//capitalize
     private Tile[][] board;
     private boolean dead;
     private boolean won;
@@ -24,9 +24,9 @@ public class GameBoard {
     private int highScore = 0;
     private Font scoreFont;
 
-    private static int SPACING = 10;
-    public static int board_width = (COLS+1)*SPACING+COLS*Tile.width;
-    public static int board_length = (ROWS+1)*SPACING+ROWS*Tile.length;
+    private static int spacing = 10;
+    public static int board_width = (COLS+1)*spacing+COLS*Tile.width;
+    public static int board_length = (ROWS+1)*spacing+ROWS*Tile.length;
 
     private boolean hasStarted;
 
@@ -105,14 +105,14 @@ public class GameBoard {
 
         for(int row = 0; row < ROWS; row++){
             for(int col = 0; col< COLS;col++){
-                int x = SPACING+SPACING*col +Tile.width*col;
-                int y = SPACING+SPACING*row+Tile.length*row;
+                int x = spacing+spacing*col +Tile.width*col;
+                int y = spacing+spacing*row+Tile.length*row;
                 g.fillRoundRect(x,y,Tile.width,Tile.length,Tile.arc_width,Tile.arc_height);
                 }
             }
         }
         private void start(){
-        for(int i= 0; i< startingTiles;i++){
+        for(int i= 0; i< STARTINGTILES;i++){
             spawnRandom();
             }
         }
@@ -127,7 +127,7 @@ public class GameBoard {
 
             Tile current = board[row][col];
             if(current == null){
-                int value = random.nextInt(10)< 9 ? 2:4; //90% chance for 2 to get spawned and 90% chance for 4 to spawn
+                int value = random.nextInt(10)< 9 ? 2:4; //90% chance for 2 to get spawned and 10% chance for 4 to spawn
                 Tile tile = new Tile(value,getTileX(col),getTileY(row));
                 board[row][col] = tile;
                 notValid = false;
@@ -136,10 +136,10 @@ public class GameBoard {
         }
 
         public int getTileX(int col){
-        return SPACING+col*Tile.width+col*SPACING;
+        return spacing+col*Tile.width+col*spacing;
         }
     public int getTileY(int row){
-        return SPACING+row*Tile.length+row*SPACING;
+        return spacing+row*Tile.length+row*spacing;
     }
 
 
@@ -161,9 +161,9 @@ public class GameBoard {
 
             g.setColor(Color.lightGray);
             g.setFont(scoreFont);
-            g.drawString("" + score,30,40);
+            g.drawString("" + score,800,380);
             g.setColor(Color.red);
-            g.drawString("HighScore: " + highScore,Game.width - DrawUtils.getMessageWidth("Best ",scoreFont,g)-200,40);
+            g.drawString("HighScore: " + highScore,Game.width - DrawUtils.getMessageWidth("Best ",scoreFont,g)-900,380);
 
         }
 

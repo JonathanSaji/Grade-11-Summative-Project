@@ -15,10 +15,6 @@ public class Game extends JPanel implements KeyListener,Runnable{
     private BufferedImage image = new BufferedImage(width,length,BufferedImage.TYPE_INT_RGB); //no flicker
     private GameBoard board;
 
-    private long startTime;
-    private long elapsed;
-    private boolean set;
-
     public Game(){
         setFocusable(true);//lets keyboard input to be set
         setPreferredSize(new Dimension(width,length));
@@ -33,7 +29,7 @@ public class Game extends JPanel implements KeyListener,Runnable{
     }
     private void render(){
         Graphics2D g = (Graphics2D)  image.getGraphics();// how to draw to the image
-        g.setColor(Color.white);
+        g.setColor(Color.BLACK);
         g.fillRect(0,0,width,length);//white rectangle on the screen
         //rendering board
         board.render(g);
