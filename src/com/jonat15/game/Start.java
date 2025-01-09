@@ -1,43 +1,32 @@
 package com.jonat15.game;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.sound.sampled.*;
+import java.io.File;
+import java.io.IOException;
 
-public class Start {
-    public static boolean _status = false;
-    public static void main(String[] args) {
+
+public class Start extends JFrame {
+    public static Clip clip;
+    public static JFrame window;
+    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         Game game = new Game();
-        Menu menu = new Menu();
-
-        boolean status = false;
-        Start.SetStatus(status);
-
-        while(!status){
-            status = _status;
-            if(status){
-                menu.remove_menu();
-                JFrame window = new JFrame("2048");
-
-                window.getContentPane().setBackground(Color.BLACK);
-                window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                window.pack();
-                window.setLocationRelativeTo(null);
-                window.setVisible(true);
-                window.add(game);
-                game.start();
-                System.out.println("Game Started");
-                break;
-            }
-            System.out.println("Running");
+        window = new JFrame("2048");
+        Menu menu = new Menu(window);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.add(menu);
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // Load the WAV file
+        File audioFile = new File("src/Kahoot Lobby Music (HD).wav");
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+        // Get a sound clip resource
+        clip = AudioSystem.getClip();
+        clip.open(audioStream);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        // Let the music play for its duration (optional, for demonstration)// Wait until the music finishes
         }
-        }
-
-        public static boolean getStatus(){
-        return _status;
-        }
-        public static void SetStatus(boolean STATUS){
-            _status = STATUS;
-        }
-
     }
+

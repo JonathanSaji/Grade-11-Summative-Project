@@ -1,112 +1,124 @@
 package com.jonat15.game;
 
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+public class Menu extends JPanel implements ActionListener {
+    public static final int width = 1920;
+    public static final int length = 1080;
+    public static final Font main = new Font("Arial", Font.BOLD, 28);
 
-public class Menu extends JFrame implements ActionListener {
-    JLabel welcome,tutorial,directions;
-    JButton start,exit,howToPlay,exit_tutorial;
-    JPanel panel;
-    boolean start_game = false;
-    JFrame frame;
-    public Menu() {
-        frame  = new JFrame("Welcome");
-        frame.getContentPane().setBackground(Color.BLACK);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setLayout(null);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    public static JPanel panel;
+    private JLabel welcome;
+    private JButton unmute, mute, start, exit, exit_tutorial, howToPlay;
+    private boolean exit_menu = false;
 
+    public Menu(JFrame frame) {
+        panel = new JPanel();
+        panel.setSize(width, length);
+        panel.setBackground(Color.BLACK);
+        panel.setLayout(null);
+        panel.setOpaque(true);
+        frame.add(panel);  // Ensure Start.window is initialized before this point
+
+        // Start Button
         start = new JButton("Start");
         start.setFont(Game.main.deriveFont(36f));
-        start.setBounds(885,490,150,100);
+        start.setBounds(885, 490, 150, 100);
         start.setVisible(true);
-        frame.add(start);
         start.addActionListener(this);
+        panel.add(start);
 
+        // Exit Button
         exit = new JButton("Exit");
-        exit.setFont(Game.main.deriveFont(36f));
-        exit.setBounds(885,610,150,100);
-        frame.add(exit);
+        exit.setFont(new Font("Arial", Font.BOLD, 36));
+        exit.setBounds(885, 610, 150, 100);
         exit.addActionListener(this);
+        panel.add(exit);
 
+        // How To Play Button
         howToPlay = new JButton("How To Play");
-        howToPlay.setFont(Game.main.deriveFont(36f));
-        howToPlay.setBounds(810,370,300,100);
-        frame.add(howToPlay);
+        howToPlay.setFont(new Font("Arial", Font.BOLD, 36));
+        howToPlay.setBounds(810, 370, 300, 100);
         howToPlay.addActionListener(this);
+        panel.add(howToPlay);
 
+        // Exit Tutorial Button (hidden by default)
         exit_tutorial = new JButton("x");
+        exit_tutorial.setFont(new Font("Arial", Font.PLAIN, 20));
+        exit_tutorial.setBounds(670, 20, 50, 50);
         exit_tutorial.setVisible(false);
-        exit_tutorial.setFont(Game.main.deriveFont(20f));
-        exit_tutorial.setBounds(670,20,50,50);
-        frame.add(exit_tutorial);
         exit_tutorial.addActionListener(this);
+        panel.add(exit_tutorial);
 
-        welcome = new JLabel("Welcome",SwingConstants.CENTER);
-        welcome.setFont(Game.main.deriveFont(72f));
+        // Welcome Label
+        welcome = new JLabel("Welcome To 2048", SwingConstants.CENTER);
+        welcome.setFont(new Font("Arial", Font.BOLD, 72));
         welcome.setForeground(Color.RED);
-        welcome.setVisible(true);
-        welcome.setBounds(460,100,1000,100);
-        frame.add(welcome);
+        welcome.setBounds(460, 100, 1000, 100);
+        panel.add(welcome);
 
-        panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        panel.setVisible(false);
-        panel.setBounds(20,20,700,950);
-        panel.setBackground(Color.white);
+        // Unmute Button
+        unmute = new JButton("Sound On");
+        unmute.setBounds(1500, 430, 100, 100);
+        unmute.setForeground(Color.black);
+        unmute.addActionListener(this);
+        panel.add(unmute);
 
-        JLabelAdder(20,20,660,100,tutorial,"<html><br><br>To play 2048, use arrow keys to<br>matching tiles with the same number,<br>" +
-                "which will merge into one tile " + "<br> with the sum of the two numbers." +
-                "<br><br> The goal is to keep combining tiles" + " <br> until you create the 2048 tile.<html>");
-
-
-        JLabelAdder(20,80,660,100,directions,"<html><br><br>Direction's<br><br>Right: → (Arrow Key)<br><br>" +
-                "Left: ← (Arrow Key) <br><br>" +
-                "Up: ↑ (Arrow Key)<br><br>" +
-                "Down: ↓ (Arrow Key)<html>");
-
-
-
-
-
-    }
-
-    public void JLabelAdder(int x,int y, int width, int length, JLabel label, String txt){
-        label = new JLabel(txt);
-        label.setBounds(x,y,width,length);
-        label.setFont(Game.main.deriveFont(36f));
-        label.setVisible(true);
-        label.setForeground(Color.red);
-        panel.add(label);
-        frame.add(panel);
+        // Mute Button
+        mute = new JButton("Sound Off");
+        mute.setBounds(1500, 550, 100, 100);
+        mute.setForeground(Color.black);
+        mute.addActionListener(this);
+        panel.add(mute);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == start){
-            start_game = true;
-            Start.SetStatus(true);
-        }
-        else if(e.getSource() == exit){
-            frame.dispose();
-        }
-        else if(e.getSource() == howToPlay){
-            panel.setVisible(true);
-            exit_tutorial.setVisible(true);
-        }
-        else if(e.getSource() == exit_tutorial){
-            panel.setVisible(false);
-            exit_tutorial.setVisible(false);
+        if (e.getSource() == unmute) {
+            // Unmute the sound
+            Start.clip.loop(Clip.LOOP_CONTINUOUSLY);
+            Start.clip.start();
+        } else if (e.getSource() == mute) {
+            // Mute the sound
+            Start.clip.stop();
+        } else if (e.getSource() == exit) {
+            // Close the game
+            Start.window.dispose();
+            Start.clip.stop();
+            exit_menu = true;
+        } else if (e.getSource() == howToPlay) {
+            // Show tutorial
+            showTutorial();
+        } else if (e.getSource() == exit_tutorial) {
+            // Close tutorial
+            exitTutorial();
+        } else if (e.getSource() == start) {
+            // Start the game
         }
     }
 
+    private void showTutorial() {
+        // Display tutorial information
+        exit_tutorial.setVisible(true);  // Show the exit tutorial button
+        // You can add tutorial content display logic here (e.g., a new panel or a message)
+    }
 
-    public void remove_menu(){
-        frame.dispose();
+    private void exitTutorial() {
+        // Hide tutorial and return to main menu
+        exit_tutorial.setVisible(false);
+        // Add logic to hide tutorial content if any (e.g., removing panels or resetting labels)
+    }
+
+    public static void StartGame(JFrame frame, Menu menu, Game game) {
+        // Start the game
+        frame.remove(menu);
+        frame.add(game);
+        frame.revalidate();
+        frame.repaint();
+        game.start();
     }
 }

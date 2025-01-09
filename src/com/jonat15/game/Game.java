@@ -21,6 +21,7 @@ public class Game extends JPanel implements KeyListener,Runnable{
         addKeyListener(this);
 
         board = new GameBoard(width/2 - GameBoard.board_width/2,length -GameBoard.board_length-320);//center on x axis and left 10 up from the screen
+
     }
 
     private void update(){
@@ -90,10 +91,12 @@ public class Game extends JPanel implements KeyListener,Runnable{
             }
     }
     public synchronized void start(){
-        if(running) return;
-        running = true;
-        game = new Thread(this,"game");
-        game.start();
+
+            if (running) return;
+            running = true;
+            game = new Thread(this, "game");
+            game.start();
+
     }
     public synchronized void stop(){
         if(!running) return;

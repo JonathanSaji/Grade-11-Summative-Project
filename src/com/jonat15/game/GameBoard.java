@@ -51,6 +51,7 @@ public class GameBoard {
         loadHighScore();
         createBoardImage();
         start();
+
     }
 
     private void createSaveData(){
