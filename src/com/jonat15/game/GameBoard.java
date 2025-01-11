@@ -1,5 +1,6 @@
 package com.jonat15.game;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -14,14 +15,14 @@ public class GameBoard {
     private Color game_border,gameTile_background;
     private final int STARTINGTILES = 2;//capitalize
     private Tile[][] board;
-    private boolean dead;
-    private boolean won;
+   static public boolean dead;
+   static public boolean won;
     private BufferedImage gameBoard;
     private BufferedImage finalBoard;
     private int x;
     private int y;
     private int score = 0;
-    private int highScore = 0;
+    public static int highScore = 0;
     private Font scoreFont;
 
     private static int spacing = 10;
@@ -42,7 +43,7 @@ public class GameBoard {
         }catch(Exception e){
            e.printStackTrace();
         }
-        scoreFont = Game.main.deriveFont(24f);
+        scoreFont = new Font("Monospaced", Font.BOLD, 20);
         this.x = x;
         this.y = y;
         board = new Tile[ROWS][COLS];
@@ -375,6 +376,7 @@ public class GameBoard {
 
                 }
             }
+
         dead = true;
         setHighScore();//this means that none of the tiles returned and you died or lost to be more precise.
     }

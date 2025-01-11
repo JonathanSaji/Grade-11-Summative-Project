@@ -36,10 +36,11 @@ public class Game extends JPanel implements KeyListener,Runnable{
         board.render(g);
         g.dispose();
 
-        Graphics2D g2d = (Graphics2D) getGraphics();//JPanel graghics
-        g2d.drawImage(image,0,0,null);//final image to the JPanel
-        g2d.dispose();
-
+        if(running) {
+            Graphics2D g2d = (Graphics2D) getGraphics();//JPanel graghics
+            g2d.drawImage(image, 0, 0, null);//final image to the JPanel
+            g2d.dispose();
+        }
 
     }
 
@@ -101,7 +102,7 @@ public class Game extends JPanel implements KeyListener,Runnable{
     public synchronized void stop(){
         if(!running) return;
         running = false;
-        System.exit(0);
+        board =  new GameBoard(width/2 - GameBoard.board_width/2,length -GameBoard.board_length-320);
     }
 
 
