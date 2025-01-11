@@ -103,10 +103,10 @@ public class Tile {
         g.setColor(text);
 
         if(value <=64){
-            font = Game.main.deriveFont(36f);
+            font = new Font("Monospaced", Font.BOLD, 36);
         }
         else{
-            font = Game.main;
+            font = new Font("Monospaced", Font.BOLD, 36);;
         }
         g.setFont(font);
 
