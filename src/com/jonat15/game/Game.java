@@ -16,11 +16,17 @@ public class Game extends JPanel implements KeyListener,Runnable{
     private GameBoard board;
 
     public Game(){
-        setFocusable(true);//lets keyboard input to be set
+        setFocusable(true);//let's keyboard input to be set
         setPreferredSize(new Dimension(width,length));
         addKeyListener(this);
 
-        board = new GameBoard(width/2 - GameBoard.board_width/2,length -GameBoard.board_length-320);//center on x axis and left 10 up from the screen
+        board = new GameBoard(width/2 - GameBoard.board_width/2,length -GameBoard.board_length-320);//center on x-axis and left 10 up from the screen
+
+        JButton btn = new JButton("Click Me!");
+        btn.setBounds(40, 40, 100, 50);
+        btn.addActionListener(e -> JOptionPane.showMessageDialog(this, "Button Clicked!"));
+        setLayout(null); // Use null layout to set absolute positions
+        add(btn);
 
     }
 
@@ -36,10 +42,11 @@ public class Game extends JPanel implements KeyListener,Runnable{
         board.render(g);
         g.dispose();
 
-        Graphics2D g2d = (Graphics2D) getGraphics();//JPanel graghics
-        g2d.drawImage(image,0,0,null);//final image to the JPanel
-        g2d.dispose();
-
+        if(running) {
+            Graphics2D g2d = (Graphics2D) getGraphics();//JPanel graphics
+            g2d.drawImage(image, 0, 0, null);//final image to the JPanel
+            g2d.dispose();
+        }
 
     }
 
@@ -77,7 +84,7 @@ public class Game extends JPanel implements KeyListener,Runnable{
                 try {
                     Thread.sleep(1);
                 } catch (Exception e) {
-                    System.out.println("Error");//just in case but usually wont be error.
+                    System.out.println("Error");//just in case but usually won't be error.
                 }
             }
         }
@@ -101,7 +108,7 @@ public class Game extends JPanel implements KeyListener,Runnable{
     public synchronized void stop(){
         if(!running) return;
         running = false;
-        System.exit(0);
+        board =  new GameBoard(width/2 - GameBoard.board_width/2,length -GameBoard.board_length-320);
     }
 
 
