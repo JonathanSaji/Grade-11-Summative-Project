@@ -8,7 +8,7 @@ public class Tile {
 
     public static final int width = 80;
     public static final int length = 80;
-    public static final int slide_speed = 20;
+    public static final int slide_speed = 15;
     public static final int arc_width = 30;
     public static final int arc_height = 30;
 
