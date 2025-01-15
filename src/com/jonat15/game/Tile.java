@@ -6,11 +6,11 @@ import java.awt.image.BufferedImage;
 
 public class Tile {
 
-    public static final int width = 80;
-    public static final int length = 80;
-    public static final int slide_speed = 10;
-    public static final int arc_width = 15;
-    public static final int arc_height = 15;
+    public static final int width = 150;
+    public static final int length = 150;
+    public static final int slide_speed = 15;
+    public static final int arc_width = 30;
+    public static final int arc_height = 30;
 
     private int value;
     private BufferedImage tileimage;
@@ -89,10 +89,11 @@ public class Tile {
         else if(value == 2048){
             background = new Color(0xECC12E);
             text = new Color(0xF2F6FD);
+            GameBoard.won = true;
         }
         else{
-            background = new Color(0xBAAC9F);
-            text = new Color(0xCCC0B3);
+            background = new Color(0x000000);
+            text = new Color(0xFFFFFF);
        }
 
         g.setColor(new Color(0,0,0,0));
@@ -103,15 +104,15 @@ public class Tile {
         g.setColor(text);
 
         if(value <=64){
-            font = Game.main.deriveFont(36f);
+            font = new Font("Monospaced", Font.BOLD, 72);
         }
         else{
-            font = Game.main;
+            font = new Font("Monospaced", Font.BOLD, 72);;
         }
         g.setFont(font);
 
         int drawX = width / 2 - DrawUtils.getMessageWidth(""+value,font,g)/2;
-        int drawY = length -13 - DrawUtils.getMessageHeight(""+value,font,g)/2;
+        int drawY = length -30 - DrawUtils.getMessageHeight(""+value,font,g)/2;
         g.drawString(""+value,drawX,drawY);
         g.dispose();
 
