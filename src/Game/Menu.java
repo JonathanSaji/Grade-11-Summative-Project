@@ -24,10 +24,10 @@ public class Menu extends JPanel implements ActionListener {
     private static boolean isDead,isWon;
     private static boolean whileLoopRunning = true;
     private static JPanel panel,End_Panel,tutorial_panel,SongLibrary;
-    private JButton unmute, mute, start, exit, exit_tutorial,exitMusic, howToPlay,PlayAgain,MainMenu,Stal,Music,WetHands,nextSong,TileSize;
-    public static Game game = new Game();
+    private JButton unmute, mute, start, exit, exit_tutorial,exitMusic, howToPlay,PlayAgain,MainMenu,Stal,Music,WetHands,nextSong,TileSize,ChangeToSquare,ChangeToCircle,ChangeToRounded;
+    public static Game game;
     private Font font36 = new Font("Monospaced", Font.BOLD, 36);
-    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
+    public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException{
 
         window = new JFrame("2048");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,6 +155,15 @@ public class Menu extends JPanel implements ActionListener {
         TileSize = new JButton();
         ButtonCreator(TileSize,1390,200,420,100,panel,"Tile Size (BETA)",BorderCreator(Color.white,2,true),null,Color.white,Color.black,font36,true);
 
+        ChangeToCircle = new JButton();
+        ButtonCreator(ChangeToCircle,20,20,300,50,songLibrary,"Change Tile To Circle",null,null,Color.white,Color.black,FontCreator(20),true);
+
+        ChangeToSquare = new JButton();
+        ButtonCreator(ChangeToSquare,20,80,300,50,songLibrary,"Change Tile To Square",null,null,Color.white,Color.black,FontCreator(20),true);
+
+        ChangeToRounded = new JButton();
+        ButtonCreator(ChangeToRounded,20,140,300,50,songLibrary,"Change Tile To Round",null,null,Color.white,Color.black,FontCreator(20),true);
+
         //Start of Music...
         //Music Button (txt) This opens the song library panel
         Music = new JButton("Music Library");
@@ -246,6 +255,7 @@ public class Menu extends JPanel implements ActionListener {
 
         } else if (e.getSource() == start) {
             // Start the game
+            game = new Game();
             window.add(game);
             window.remove(panel);
             ExplosionClip.setMicrosecondPosition(0);
@@ -284,8 +294,15 @@ public class Menu extends JPanel implements ActionListener {
             }
         }
         else if(e.getSource() == Music){
+            TileSize.setVisible(true);
             SongLibrary.setVisible(true);
+            Stal.setVisible(false);
+            WetHands.setVisible(true);
+            nextSong.setVisible(true);
             Music.setVisible(false);
+            ChangeToCircle.setVisible(false);
+            ChangeToSquare.setVisible(false);
+            ChangeToRounded.setVisible(false);
         }
         else if(e.getSource() == WetHands) {
             if(!Muted) {
@@ -315,9 +332,26 @@ public class Menu extends JPanel implements ActionListener {
         }
         else if(e.getSource() == exitMusic){
             Music.setVisible(true);
+            TileSize.setVisible(true);
             SongLibrary.setVisible(false);
         }
+        else if(e.getSource() == TileSize){
+            ChangeToCircle.setVisible(true);
+            ChangeToSquare.setVisible(true);
+            ChangeToRounded.setVisible(true);
+            TileSize.setVisible(false);
+            Music.setVisible(true);
+            Stal.setVisible(false);
+            SongLibrary.setVisible(true);
+            nextSong.setVisible(false);
+            WetHands.setVisible(false);
 
+        }
+        else if(e.getSource() == ChangeToCircle){
+            GameBoard.arc_width = 180;
+            GameBoard.arc_height = 180;
+            game = new Game();
+        }
     }
     //This method is used for every JButton in this class
     public void ButtonCreator(JButton btn, int x,int y,int width,int length,JPanel jPanel,String txt,Border border,String imgPath,Color foreground, Color background,Font font,boolean visible){
@@ -351,6 +385,7 @@ public class Menu extends JPanel implements ActionListener {
         Border border = new LineBorder(color,thickness,rounded);
         return border;
     }
+
     public static void PanelCreator(int x,int y,int width, int length,JPanel panel,Border border, Color background,boolean visible, JPanel ParentPanel, boolean useParentPanel){
         panel.setVisible(visible);
         panel.setBounds(x,y,width,length);
@@ -361,4 +396,5 @@ public class Menu extends JPanel implements ActionListener {
             ParentPanel.add(panel);
         }
     }
+
 }

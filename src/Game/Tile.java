@@ -9,8 +9,8 @@ public class Tile {
     public static final int width = 150;
     public static final int length = 150;
     public static final int slide_speed = 15;
-    public static final int arc_width = 30;
-    public static final int arc_height = 30;
+    public static  int arc_width;
+    public static int arc_height;
 
     private int value;
     private BufferedImage tileimage;
@@ -32,7 +32,9 @@ public class Tile {
     private BufferedImage combineImage;
     private boolean CanCombine = true;
 
-    public Tile(int value,int x , int y){
+    public Tile(int value,int x , int y, int arc_height, int arc_width){
+        this.arc_height = arc_height;
+        this.arc_width = arc_width;
         this.value = value;
         this.x = x;
         this.y = y;
