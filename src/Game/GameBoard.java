@@ -8,10 +8,6 @@ import java.io.*;
 import java.util.Random;
 
 public class GameBoard {
-    public static Tile tile;
-    public static int row;
-    public static int col;
-    public static int value;
     public static int arc_height = 30;
     public static int arc_width = 30;
     public static final int ROWS = 4;
@@ -128,13 +124,13 @@ public class GameBoard {
         boolean notValid = true;
         while(notValid){
             int location =random.nextInt(ROWS*COLS); //instead of 16 for more efficiency
-            row = location/ROWS;//single to two dimension
-            col = location%COLS;
+            int row = location/ROWS;//single to two dimension
+            int col = location%COLS;
 
             Tile current = board[row][col];
             if(current == null){
-                value = random.nextInt(10)< 9 ? 2:4; //90% chance for 2 to get spawned and 10% chance for 4 to spawn
-                tile = new Tile(value,getTileX(col),getTileY(row),arc_height,arc_width);
+                int value = random.nextInt(10)< 9 ? 2:4; //90% chance for 2 to get spawned and 10% chance for 4 to spawn
+                Tile tile = new Tile(value,getTileX(col),getTileY(row),arc_height,arc_width);
                 board[row][col] = tile;
                 notValid = false;
             }

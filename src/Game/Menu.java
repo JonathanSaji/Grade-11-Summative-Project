@@ -11,8 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class Menu extends JPanel implements ActionListener {
-    public boolean StalNeedPlay = false;
-    public boolean WetHandsNeedPlay = true;
+    private boolean StalNeedPlay = false;
+    private boolean WetHandsNeedPlay = true;
     private static Clip WetHandsClip,StalClip,ExplosionClip;
     private boolean stalShown = false;
     private boolean WetHandsShown = true;
@@ -153,7 +153,7 @@ public class Menu extends JPanel implements ActionListener {
         //End of Sound...
 
         TileSize = new JButton();
-        ButtonCreator(TileSize,1390,200,420,100,panel,"Tile Size (BETA)",BorderCreator(Color.white,2,true),null,Color.white,Color.black,font36,true);
+        ButtonCreator(TileSize,1390,200,420,100,panel,"Tile Size",BorderCreator(Color.white,2,true),null,Color.white,Color.black,font36,true);
 
         ChangeToCircle = new JButton();
         ButtonCreator(ChangeToCircle,20,20,300,50,songLibrary,"Change Tile To Circle",null,null,Color.white,Color.black,FontCreator(20),true);
@@ -350,7 +350,14 @@ public class Menu extends JPanel implements ActionListener {
         else if(e.getSource() == ChangeToCircle){
             GameBoard.arc_width = 180;
             GameBoard.arc_height = 180;
-            game = new Game();
+        }
+        else if(e.getSource() == ChangeToRounded){
+            GameBoard.arc_height = 30;
+            GameBoard.arc_width = 30;
+        }
+        else if(e.getSource() == ChangeToSquare){
+            GameBoard.arc_width = 0;
+            GameBoard.arc_height = 0;
         }
     }
     //This method is used for every JButton in this class
