@@ -162,9 +162,9 @@ public class GameBoard {
 
         g.setColor(Color.lightGray);
         g.setFont(scoreFont);
-        g.drawString("" + score,800,790);
+        g.drawString("" + score,950,800);
         g.setColor(Color.red);
-        g.drawString("HighScore: " + highScore,Game.width - DrawUtils.getMessageWidth("Best ",scoreFont,g)-900,790);
+        g.drawString("HighScore: " + highScore,Game.width - DrawUtils.getMessageWidth("Best ",scoreFont,g)-1000,900);
 
         g.setColor(Color.yellow);
         g.drawString("2048 - Jonathan Saji©",640,100);

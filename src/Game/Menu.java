@@ -19,13 +19,12 @@ public class Menu extends JPanel implements ActionListener {
     private boolean Muted = false;
     public static JFrame window;
     private static JLabel DeathLabel, WinLabel;
-    private JLabel welcome,tutorial;
+    private JLabel welcome,tutorial, DevelopedBy;
     private static JLabel highScore;
     private static boolean isDead,isWon;
     private static boolean whileLoopRunning = true;
     private static JPanel panel,End_Panel,tutorial_panel,SongLibrary;
-    private JButton unmute, mute, start, exit, exit_tutorial,exitMusic, howToPlay,PlayAgain,MainMenu,Stal,Music,WetHands,nextSong;
-    private boolean exit_menu = false;
+    private JButton unmute, mute, start, exit, exit_tutorial,exitMusic, howToPlay,PlayAgain,MainMenu,Stal,Music,WetHands,nextSong,TileSize;
     public static Game game = new Game();
     private Font font36 = new Font("Monospaced", Font.BOLD, 36);
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
@@ -72,7 +71,6 @@ public class Menu extends JPanel implements ActionListener {
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        while(whileLoopRunning) {
             GameBoard.dead = false;
             GameBoard.won = false;
             isDead = false;
@@ -103,15 +101,13 @@ public class Menu extends JPanel implements ActionListener {
                     highScore.setText("The Highscore is: " + GameBoard.highScore);
                 }
                 System.out.println("Game Is Running");
-
             }
-            System.out.println(isDead);
-        }
     }
 
     public Menu(JPanel panel, JPanel end_panel,JPanel T_panel,JPanel songLibrary){
         Border SoundBorder = BorderFactory.createLineBorder(Color.YELLOW,10,true);
 
+        //Start of Panel...
         //Start Button (gif)
         start = new JButton();
         ButtonCreator(start,885,490,150,100,panel,null,null,"src/res/StartButtonGif.gif",null,null,null,true);
@@ -144,7 +140,9 @@ public class Menu extends JPanel implements ActionListener {
         // Highscore (txt) Gets updated everytime 1 game session ends
         highScore = new JLabel("",SwingConstants.CENTER);
         LabelCreator(highScore,460,210,1000,100,panel,"The Highscore is: " + GameBoard.highScore,null,Color.WHITE,null,font36,true);
+        //End of Panel
 
+        //Start of Sound...
         // Un-mute Button (img) This button un-mutes the selected music in the game
         unmute = new JButton();
         ButtonCreator(unmute,1500,430,210,210,panel,null,SoundBorder,"src/res/SoundButton/Sound Off 200x200.gif",null,null,null,false);
@@ -152,7 +150,12 @@ public class Menu extends JPanel implements ActionListener {
         // Mute Button (img) This mutes all the music in the game
         mute = new JButton();
         ButtonCreator(mute,1500,430,210,210,panel,null,SoundBorder,"src/res/SoundButton/Sound On 200x200.gif",null,null,null,true);
+        //End of Sound...
 
+        TileSize = new JButton();
+        ButtonCreator(TileSize,1390,200,420,100,panel,"Tile Size (BETA)",BorderCreator(Color.white,2,true),null,Color.white,Color.black,font36,true);
+
+        //Start of Music...
         //Music Button (txt) This opens the song library panel
         Music = new JButton("Music Library");
         ButtonCreator(Music,1390,320,420,100,panel,"Music Library",BorderCreator(Color.white,2,true),null,Color.WHITE,Color.BLACK,font36,true);
@@ -172,9 +175,14 @@ public class Menu extends JPanel implements ActionListener {
         //Wet Hands (txt) This Button lets the music Wet Hands - C418 play
         WetHands = new JButton();
         ButtonCreator(WetHands,10, 10, 253, 200,songLibrary,"<html> Wet Hands" + "<br> - C418",null,null,Color.black,Color.darkGray,font36,true);
+        //End of Music...
+
+        //Developed By (txt) This button is just a way to say that I designed this game
+        DevelopedBy = new JLabel("",SwingConstants.CENTER);
+        LabelCreator(DevelopedBy,480,750,1000,100,panel,"Developed By Jonathan Saji",null,Color.white,null,font36,true);
 
 
-        //Start of End Panel
+        //Start of End Panel...
         //Label for death or LOST
         DeathLabel = new JLabel();
         LabelCreator(DeathLabel,0, 50, 1920, 400,end_panel,"You Lost",null,Color.red,null,FontCreator(400),false);
@@ -190,6 +198,8 @@ public class Menu extends JPanel implements ActionListener {
         //Return back to the starting screen or main menu
         MainMenu = new JButton("<html> Main <br> Menu");
         ButtonCreator(MainMenu,1540, 490, 200, 200,end_panel,null,null,"src/res/MainMenuImage.jpg",null,null,null,true);
+        //End of End Panel...
+
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -216,10 +226,11 @@ public class Menu extends JPanel implements ActionListener {
             unmute.setVisible(true);
         } else if (e.getSource() == exit) {
             // Close the game
-            window.dispose();
-            WetHandsClip.stop();
-            StalClip.stop();
-            System.exit(0);
+            int input = JOptionPane.showConfirmDialog(null,"Do You Want to Leave","Quit Game?",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+            if(input == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
+
         } else if (e.getSource() == howToPlay) {
             tutorial_panel.setVisible(true);
             howToPlay.setVisible(false);
