@@ -19,7 +19,7 @@ public class Menu extends JPanel implements ActionListener {
     private boolean Muted = false;
     public static JFrame window;
     private static JLabel DeathLabel, WinLabel;
-    private JLabel welcome,tutorial, DevelopedBy;
+    private JLabel welcome,tutorial, DevelopedBy,NowPlaying;
     private static JLabel highScore;
     private static boolean isDead,isWon;
     private static boolean whileLoopRunning = true;
@@ -181,6 +181,8 @@ public class Menu extends JPanel implements ActionListener {
         DevelopedBy = new JLabel("",SwingConstants.CENTER);
         LabelCreator(DevelopedBy,480,750,1000,100,panel,"Developed By Jonathan Saji",null,Color.white,null,font36,true);
 
+        NowPlaying = new JLabel("",SwingConstants.CENTER);
+        LabelCreator(NowPlaying,460,300,1000,100,panel,"Now Playing: Wet Hands - C418",null,Color.white,null,FontCreator(30),true);
 
         //Start of End Panel...
         //Label for death or LOST
@@ -208,11 +210,13 @@ public class Menu extends JPanel implements ActionListener {
                 Muted = false;
                 WetHandsClip.start();
                 WetHandsClip.loop(Clip.LOOP_CONTINUOUSLY);
+                NowPlaying.setText("Now Playing: Wet Hands - C418");
             }
             else if(StalNeedPlay){
                 Muted = false;
                 StalClip.start();
                 StalClip.loop(Clip.LOOP_CONTINUOUSLY);
+                NowPlaying.setText("Now Playing: Stal - C418");
             }
             mute.setVisible(true);
             unmute.setVisible(false);
@@ -224,6 +228,7 @@ public class Menu extends JPanel implements ActionListener {
             StalClip.stop();
             mute.setVisible(false);
             unmute.setVisible(true);
+            NowPlaying.setText("Now Playing: Nothing");
         } else if (e.getSource() == exit) {
             // Close the game
             int input = JOptionPane.showConfirmDialog(null,"Do You Want to Leave","Quit Game?",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
@@ -275,6 +280,7 @@ public class Menu extends JPanel implements ActionListener {
                 StalClip.loop(Clip.LOOP_CONTINUOUSLY);
                 StalNeedPlay = true;
                 WetHandsNeedPlay = false;
+                NowPlaying.setText("Now Playing: Stal - C418");
             }
         }
         else if(e.getSource() == Music){
@@ -288,6 +294,7 @@ public class Menu extends JPanel implements ActionListener {
                 WetHandsClip.loop(Clip.LOOP_CONTINUOUSLY);
                 StalNeedPlay = false;
                 WetHandsNeedPlay = true;
+                NowPlaying.setText("Now Playing: Wet Hands - C418");
             }
         }
         else if(e.getSource() == nextSong){
