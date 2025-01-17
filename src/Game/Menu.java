@@ -1,25 +1,25 @@
-package com.jonat15.game;
+package Game;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class Menu extends JPanel implements ActionListener {
-    public static final int width = 1920;
-    public static final int length = 1080;
-    public static Clip WetHandsClip, ExplosionClip,StalClip;
-    private boolean StalPLaying,stalShown = false;
-    private boolean WetHandsPlaying,WetHandsShown = true;
+    public boolean StalNeedPlay = false;
+    public boolean WetHandsNeedPlay = true;
+    private static Clip WetHandsClip,StalClip,ExplosionClip;
+    private boolean stalShown = false;
+    private boolean WetHandsShown = true;
     private boolean Muted = false;
     public static JFrame window;
     private static JLabel DeathLabel, WinLabel;
-    private  JLabel welcome,tutorial;
+    private JLabel welcome,tutorial;
     private static JLabel highScore;
     private static boolean isDead,isWon;
     private static boolean whileLoopRunning = true;
@@ -29,62 +29,43 @@ public class Menu extends JPanel implements ActionListener {
     public static Game game = new Game();
     private Font font36 = new Font("Monospaced", Font.BOLD, 36);
     public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
+
         window = new JFrame("2048");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Start of the Audio Making...
+
         File audioFile = new File("src/res/Wet Hands.wav");
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+        AudioInputStream WetHandsStream = AudioSystem.getAudioInputStream(audioFile);
         WetHandsClip = AudioSystem.getClip();
-        WetHandsClip.open(audioStream);
-        WetHandsClip.loop(Clip.LOOP_CONTINUOUSLY);//Continuous Plays the Clip
+        WetHandsClip.open(WetHandsStream);
+        WetHandsClip.loop(Clip.LOOP_CONTINUOUSLY);
 
         File explosionFile = new File("src/res/Explosion.wav");
         AudioInputStream ExplosionStream = AudioSystem.getAudioInputStream(explosionFile);
         ExplosionClip = AudioSystem.getClip();
         ExplosionClip.open(ExplosionStream);
-        //need to start when lost or won
+
         File StalFile = new File("src/res/Stal - Music disc.wav");
         AudioInputStream StalStream = AudioSystem.getAudioInputStream(StalFile);
         StalClip = AudioSystem.getClip();
         StalClip.open(StalStream);
         StalClip.stop();
 
+        //ending of making audio
+
         panel = new JPanel();
-        panel.setSize(width, length);
-        panel.setBackground(Color.BLACK);
-        panel.setLayout(null);
-        panel.setOpaque(true);
+        PanelCreator(0,0,1920,1080,panel,null,Color.black,true,null,false);
 
         End_Panel = new JPanel();
-        End_Panel.setBackground(Color.BLACK);
-        End_Panel.setSize(width, length);
-        End_Panel.setBackground(Color.BLACK);
-        End_Panel.setLayout(null);
-        End_Panel.setOpaque(true);
-
+        PanelCreator(0,0,1920,1080,End_Panel,null,Color.black,true,null,false);
 
         tutorial_panel = new JPanel();
-        tutorial_panel.setVisible(false);
-        tutorial_panel.setBounds(10,10,600,1000);
-        tutorial_panel.setBackground(Color.BLACK);
-        tutorial_panel.setLayout(null);
-        tutorial_panel.setOpaque(true);
-        Border lineBorder = BorderFactory.createLineBorder(Color.RED, 10);
-        tutorial_panel.setBorder(lineBorder);
-        panel.add(tutorial_panel);
+        PanelCreator(10,10,600,1000,tutorial_panel,BorderCreator(Color.red,10,true),Color.black,false,panel,true);
 
         SongLibrary = new JPanel();
         Menu menu = new Menu(panel,End_Panel,tutorial_panel,SongLibrary);
-        SongLibrary.setVisible(false);
-        SongLibrary.setBounds(1380,650,430,220);
-
-        SongLibrary.setBackground(Color.darkGray);
-        SongLibrary.setLayout(null);
-        SongLibrary.setOpaque(true);
-        Border LibraryBorder= BorderFactory.createLineBorder(Color.RED, 10);
-        SongLibrary.setBorder(LibraryBorder);
-        panel.add(SongLibrary);
+        PanelCreator(1380,650,430,220,SongLibrary,BorderCreator(Color.red,10,true),Color.darkGray,false,panel,true);
 
         window.add(panel);
         window.setLocationRelativeTo(null);
@@ -122,174 +103,103 @@ public class Menu extends JPanel implements ActionListener {
                     highScore.setText("The Highscore is: " + GameBoard.highScore);
                 }
                 System.out.println("Game Is Running");
+
             }
             System.out.println(isDead);
         }
     }
 
     public Menu(JPanel panel, JPanel end_panel,JPanel T_panel,JPanel songLibrary){
-        Border SoundBorder = BorderFactory.createLineBorder(Color.YELLOW,10);
+        Border SoundBorder = BorderFactory.createLineBorder(Color.YELLOW,10,true);
+
+        //Start Button (gif)
         start = new JButton();
-        start.setIcon(new ImageIcon("src/res/StartButtonGif.gif"));
-        start.setBounds(885, 490, 150, 100);
-        start.setVisible(true);
-        start.addActionListener(this);
-        panel.add(start);
+        ButtonCreator(start,885,490,150,100,panel,null,null,"src/res/StartButtonGif.gif",null,null,null,true);
 
-        // Exit Button
+        // Exit Button (img)
         exit = new JButton();
-        exit.setIcon(new ImageIcon("src/res/ExitButton.jpg"));
-        exit.setBounds(885, 610, 150, 100);
-        exit.addActionListener(this);
-        panel.add(exit);
+        ButtonCreator(exit,885,610,150,100,panel,null,null,"src/res/ExitButton.jpg",null,null,null,true);
 
-        // How To Play Button
-        howToPlay = new JButton("How To Play");
-        howToPlay.setFont(font36);
-        howToPlay.setBackground(Color.BLACK);
-        howToPlay.setForeground(Color.WHITE);
-        howToPlay.setBounds(810, 370, 300, 100);
-        howToPlay.addActionListener(this);
-        panel.add(howToPlay);
+        // How To Play Button (txt)
+        howToPlay = new JButton();
+        ButtonCreator(howToPlay,810,370,300,100,panel,"How To Play",null,null,Color.WHITE,Color.BLACK,font36,true);
 
-        //Starts Tutorial
-        tutorial = new JLabel("<html>2048 is a single-player sliding tile puzzle video game"+
+        // Tutorial (On Tutorial Panel) (hidden on default) (txt)
+        tutorial = new JLabel();
+        LabelCreator(tutorial,10,10,600,1000,T_panel,"<html>2048 is a single-player sliding tile puzzle video game"+
                 "<br> written by Italian web developer Gabriele Cirulli and"+
                 "<br> published on GitHub. The objective of the game is"+
                 "<br> to slide numbered tiles on a grid to combine them to "+
                 "<br> create a tile with the number 2048."+
-                "<br> "+"<br> Directions: (Arrow Keys)"+"<br> Up: ↑ "+"<br> Down: ↓ "+"<br> Right: → "+"<br> Left: ← "+"<br>",SwingConstants.LEADING);
-        tutorial.setBounds(10,10,600,1000);
-        tutorial.setForeground(Color.WHITE);
-        tutorial.setFont(new Font("Monospaced", Font.BOLD, 36));
-        tutorial.setVisible(true);
-        T_panel.add(tutorial);
+                "<br> "+"<br> Directions: (Arrow Keys)"+"<br> Up: ↑ "+"<br> Down: ↓ "+"<br> Right: → "+"<br> Left: ← "+"<br>",null,Color.WHITE,null,font36,true);
 
-        // Exit Tutorial Button (hidden by default)
+        // Exit Tutorial Button (hidden by default) (img)
         exit_tutorial = new JButton();
-        exit_tutorial.setIcon(new ImageIcon("src/res/TutorialExit.png"));
-        exit_tutorial.setBounds(540,10,50,50);
-        exit_tutorial.setVisible(true);
-        exit_tutorial.addActionListener(this);
-        T_panel.add(exit_tutorial);
+        ButtonCreator(exit_tutorial,540,10,50,50,T_panel,"x",null,null,Color.WHITE,Color.BLACK,FontCreator(22),true);
 
-        // Welcome Label
-        welcome = new JLabel("Welcome To 2048", SwingConstants.CENTER);
-        welcome.setFont(new Font("Monospaced", Font.BOLD, 72));
-        welcome.setForeground(Color.WHITE);
-        welcome.setBounds(460, 100, 1000, 100);
-        panel.add(welcome);
+        // Welcome (txt)
+        welcome = new JLabel("", SwingConstants.CENTER);
+        LabelCreator(welcome,460,100,1000,100,panel,"Welcome To 2048",null,Color.WHITE,null,FontCreator(72),true);
 
-        highScore = new JLabel("The Highscore is: " + GameBoard.highScore,SwingConstants.CENTER);
-        highScore.setFont(font36);
-        highScore.setForeground(Color.WHITE);
-        highScore.setBounds(460, 210, 1000, 100);
-        panel.add(highScore);
+        // Highscore (txt) Gets updated everytime 1 game session ends
+        highScore = new JLabel("",SwingConstants.CENTER);
+        LabelCreator(highScore,460,210,1000,100,panel,"The Highscore is: " + GameBoard.highScore,null,Color.WHITE,null,font36,true);
 
-
-        // Unmute Button
+        // Un-mute Button (img) This button un-mutes the selected music in the game
         unmute = new JButton();
-        unmute.setBorder(SoundBorder);
-        unmute.setIcon(new ImageIcon("src/res/SoundButton/Sound Off 200x200.gif"));
-        unmute.setBounds(1500, 430, 210, 210);
-        unmute.setVisible(false);
-        unmute.setForeground(Color.black);
-        unmute.addActionListener(this);
-        panel.add(unmute);
+        ButtonCreator(unmute,1500,430,210,210,panel,null,SoundBorder,"src/res/SoundButton/Sound Off 200x200.gif",null,null,null,false);
 
-        // Mute Button
+        // Mute Button (img) This mutes all the music in the game
         mute = new JButton();
-        mute.setBorder(SoundBorder);
-        mute.setIcon(new ImageIcon("src/res/SoundButton/Sound On 200x200.gif"));
-        mute.setVisible(true);
-        mute.setBounds(1500, 430, 210, 210);
-        mute.addActionListener(this);
-        panel.add(mute);
+        ButtonCreator(mute,1500,430,210,210,panel,null,SoundBorder,"src/res/SoundButton/Sound On 200x200.gif",null,null,null,true);
 
+        //Music Button (txt) This opens the song library panel
         Music = new JButton("Music Library");
-        Music.setFont(font36);
-        Music.setForeground(Color.white);
-        Music.setBackground(Color.black);
-        Music.setVisible(true);
-        Music.setBounds(1390,320, 420, 100);
-        Music.addActionListener(this);
-        panel.add(Music);
+        ButtonCreator(Music,1390,320,420,100,panel,"Music Library",BorderCreator(Color.white,2,true),null,Color.WHITE,Color.BLACK,font36,true);
 
-
+        //Stal button (img) This toggles the music to play audio Stal - C418
         Stal = new JButton();
-        Stal.setIcon(new ImageIcon("src/res/StalMusicImage.jpg"));
-        Stal.setVisible(false);
-        Stal.setBounds(10,10,253,200);
-        Stal.addActionListener(this);
-        songLibrary.add(Stal);
+        ButtonCreator(Stal,10,10,253,200,songLibrary,null,null,"src/res/StalMusicImage.jpg",null,null,null,false);
 
-        nextSong = new JButton("<html> 1 / 2" + "<br> Next Page ");
-        nextSong.setForeground(Color.RED);
-        nextSong.setBackground(Color.black);
-        nextSong.setVisible(true);
-        nextSong.setBounds(300,65,100,100);
-        nextSong.addActionListener(this);
-        songLibrary.add(nextSong);
+        //NextSong button (txt) This button is used to go to toggle the songs that I have in the song library
+        nextSong = new JButton();
+        ButtonCreator(nextSong,300,65,100,100,songLibrary,"<html> 1 / 2" + "<br> Next Page ",null,null,Color.red,Color.black,FontCreator(22),true);
 
+        //Exit Music (img) This button exits the Library Song Panel and Lets Music Button Reappear
         exitMusic = new JButton();
-        exitMusic.setIcon(new ImageIcon("src/res/TutorialExit.png"));
-        exitMusic.setVisible(true);
-        exitMusic.setBounds(400,20,50,50);
-        exitMusic.addActionListener(this);
+        ButtonCreator(exitMusic,370,10,50,50,songLibrary,null,null,"src/res/TutorialExit.png",null,null,null,true);
 
-        WetHands = new JButton("<html> Wet Hands" + "<br> - C418");
-        WetHands.setFont(font36);
-        WetHands.setBackground(Color.darkGray);
-        WetHands.setVisible(true);
-        WetHands.setBounds(10, 10, 253, 200);
-        WetHands.setForeground(Color.black);
-        WetHands.addActionListener(this);
-        songLibrary.add(WetHands);
+        //Wet Hands (txt) This Button lets the music Wet Hands - C418 play
+        WetHands = new JButton();
+        ButtonCreator(WetHands,10, 10, 253, 200,songLibrary,"<html> Wet Hands" + "<br> - C418",null,null,Color.black,Color.darkGray,font36,true);
 
 
         //Start of End Panel
-        DeathLabel = new JLabel("You Lost");
-        DeathLabel.setVisible(false);
-        DeathLabel.setFont(new Font("Monospaced", Font.BOLD, 400));
-        DeathLabel.setForeground(Color.RED);
-        DeathLabel.setBounds(0, 50, 1920, 400);
-        end_panel.add(DeathLabel);
+        //Label for death or LOST
+        DeathLabel = new JLabel();
+        LabelCreator(DeathLabel,0, 50, 1920, 400,end_panel,"You Lost",null,Color.red,null,FontCreator(400),false);
 
-        WinLabel = new JLabel("You Won!");
-        WinLabel.setVisible(false);
-        WinLabel.setFont(new Font("Monospaced", Font.BOLD, 400));
-        WinLabel.setForeground(Color.RED);
-        WinLabel.setBounds(0, 50, 1920, 400);
-        end_panel.add(WinLabel);
+        //Label for WIN
+        WinLabel = new JLabel("",SwingConstants.CENTER);
+        LabelCreator(WinLabel,0, 50, 1920, 400,end_panel,"You Won",null,Color.red,null,FontCreator(400),false);
 
-        PlayAgain = new JButton("<html>Play <br>Again");
-        PlayAgain.setFont(font36);
-        PlayAgain.setBorder(SoundBorder);
-        PlayAgain.setVisible(true);
-        PlayAgain.setBounds(380, 490, 200, 200);
-        PlayAgain.addActionListener(this);
-        end_panel.add(PlayAgain);
+        //To Play the game (2048) again
+        PlayAgain = new JButton();
+        ButtonCreator(PlayAgain,380, 490, 200, 200,end_panel,null,null,"src/res/ReturnImage.jpg",null,null,null,true);
 
+        //Return back to the starting screen or main menu
         MainMenu = new JButton("<html> Main <br> Menu");
-        MainMenu.setBorder(SoundBorder);
-        MainMenu.setFont(font36);
-        MainMenu.setBounds(1540, 490, 200, 200);
-        MainMenu.setVisible(true);
-        MainMenu.addActionListener(this);
-        end_panel.add(MainMenu);
-
-        validate();
-
+        ButtonCreator(MainMenu,1540, 490, 200, 200,end_panel,null,null,"src/res/MainMenuImage.jpg",null,null,null,true);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == unmute) {
-            if(!WetHandsPlaying){
+            if(WetHandsNeedPlay){
                 Muted = false;
                 WetHandsClip.start();
                 WetHandsClip.loop(Clip.LOOP_CONTINUOUSLY);
             }
-            else if(!StalPLaying){
+            else if(StalNeedPlay){
                 Muted = false;
                 StalClip.start();
                 StalClip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -349,11 +259,11 @@ public class Menu extends JPanel implements ActionListener {
         }
         else if(e.getSource() == Stal){
             if(!Muted) {
-                StalPLaying = true;
-                WetHandsPlaying = false;
                 WetHandsClip.stop();
                 StalClip.start();
                 StalClip.loop(Clip.LOOP_CONTINUOUSLY);
+                StalNeedPlay = true;
+                WetHandsNeedPlay = false;
             }
         }
         else if(e.getSource() == Music){
@@ -362,11 +272,11 @@ public class Menu extends JPanel implements ActionListener {
         }
         else if(e.getSource() == WetHands) {
             if(!Muted) {
-                StalPLaying = false;
-                WetHandsPlaying = true;
                 StalClip.stop();
                 WetHandsClip.start();
                 WetHandsClip.loop(Clip.LOOP_CONTINUOUSLY);
+                StalNeedPlay = false;
+                WetHandsNeedPlay = true;
             }
         }
         else if(e.getSource() == nextSong){
@@ -390,5 +300,47 @@ public class Menu extends JPanel implements ActionListener {
             SongLibrary.setVisible(false);
         }
 
+    }
+    //This method is used for every JButton in this class
+    public void ButtonCreator(JButton btn, int x,int y,int width,int length,JPanel jPanel,String txt,Border border,String imgPath,Color foreground, Color background,Font font,boolean visible){
+        btn.setIcon(new ImageIcon(imgPath));
+        btn.setText(txt);
+        btn.setBackground(background);
+        btn.setForeground(foreground);
+        btn.setBorder(border);
+        btn.setFont(font);
+        btn.setBounds(x, y, width, length);
+        btn.setVisible(visible);
+        btn.addActionListener(this);
+        jPanel.add(btn);
+    }
+    //This method is used by every JLabel in this class
+    public void LabelCreator(JLabel label,int x,int y,int width, int length, JPanel jPanel, String txt, Border border,Color foreground, Color background, Font font,boolean visible){
+        label.setText(txt);
+        label.setBorder(border);
+        label.setBackground(background);
+        label.setForeground(foreground);
+        label.setFont(font);
+        label.setBounds(x,y,width,length);
+        label.setVisible(visible);
+        jPanel.add(label);
+    }
+    public Font FontCreator(int size){
+        Font font = new Font("Monospaced", Font.BOLD, size);
+        return font;
+    }
+    public static Border BorderCreator(Color color,int thickness,boolean rounded){
+        Border border = new LineBorder(color,thickness,rounded);
+        return border;
+    }
+    public static void PanelCreator(int x,int y,int width, int length,JPanel panel,Border border, Color background,boolean visible, JPanel ParentPanel, boolean useParentPanel){
+        panel.setVisible(visible);
+        panel.setBounds(x,y,width,length);
+        panel.setBackground(background);
+        panel.setLayout(null);
+        panel.setBorder(border);
+        if(useParentPanel) {
+            ParentPanel.add(panel);
+        }
     }
 }

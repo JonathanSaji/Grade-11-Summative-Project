@@ -1,6 +1,5 @@
-package com.jonat15.game;
+package Game;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;

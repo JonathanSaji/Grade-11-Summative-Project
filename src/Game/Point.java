@@ -1,4 +1,4 @@
-package com.jonat15.game;
+package Game;
 
 public class Point {
 //rows = y, columns = x

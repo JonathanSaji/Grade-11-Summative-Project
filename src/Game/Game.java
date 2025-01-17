@@ -1,4 +1,4 @@
-package com.jonat15.game;
+package Game;
 
 import javax.swing.*;
 import java.awt.*;
