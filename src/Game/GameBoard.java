@@ -148,37 +148,36 @@ public class GameBoard implements MouseListener {
     }
 
 
-    public void render(Graphics2D g){
+    public void render(Graphics2D g) {
         Graphics2D g2d = (Graphics2D) finalBoard.getGraphics();
-        g2d.drawImage(gameBoard,0,0,null);
+        g2d.drawImage(gameBoard, 0, 0, null);
 
-        for(int row = 0;row<ROWS;row++){
-            for(int col = 0; col<COLS;col++){
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS; col++) {
                 Tile current = board[row][col];
-                if(current == null){
+                if (current == null) {
                     continue; //it skips through the loop iteration and goes to the next one
                 }
                 current.render(g2d);
             }
         }
-        g.drawImage(finalBoard,x,y,null);
+        g.drawImage(finalBoard, x, y, null);
         g2d.dispose();
 
         g.setColor(Color.lightGray);
         g.setFont(scoreFont);
-        g.drawString("" + score,950,800);
+        g.drawString("" + score, 950, 800);
         g.setColor(Color.red);
-        g.drawString("HighScore: " + highScore,Game.width - DrawUtils.getMessageWidth("Best ",scoreFont,g)-1000,900);
+        g.drawString("HighScore: " + highScore, Game.width - DrawUtils.getMessageWidth("Best ", scoreFont, g) - 1000, 900);
 
         g.setColor(Color.yellow);
-        g.drawString("2048 - Jonathan Saji©",640,100);
+        g.drawString("2048 - Jonathan Saji©", 640, 100);
 
         g.setColor(Color.red);
-        g.fillRect(400,400,150,100);
+        g.fillRect(400, 300, 150, 100);
         g.setColor(Color.white);
         g.setFont(scoreFont);
-        g.drawString("MENU",415,460);
-
+        g.drawString("MENU", 415, 360);
     }
 
     public void update(){
@@ -464,16 +463,13 @@ public class GameBoard implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         int clickX = e.getXOnScreen();
         int clickY = e.getYOnScreen();
-
-        if(clickX > 400 && clickX < 400+150 && clickY > 400 && clickY < 400+100){
-            int input = JOptionPane.showConfirmDialog(null,"Do You Want to Leave \n Progress Will NOT BE SAVED","Quit To Menu?",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
-            if(input == JOptionPane.YES_OPTION) {
+        if(clickX > 400 && clickX < 400+150 && clickY > 300 && clickY < 400+100){
+                Menu.game.stop();
                 Menu.window.remove(Menu.game);
                 Menu.window.add(Menu.panel);
                 Menu.game.stop();
                 Menu.window.revalidate();
                 Menu.window.repaint();
-            }
         }
     }
 

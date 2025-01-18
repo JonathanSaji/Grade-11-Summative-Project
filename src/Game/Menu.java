@@ -73,7 +73,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener {
         window.setLocationRelativeTo(null);
         window.setVisible(true);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+        while(whileLoopRunning) {
             GameBoard.dead = false;
             GameBoard.won = false;
             isDead = false;
@@ -90,7 +90,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener {
                     isDead = GameBoard.dead;
                     highScore.setText("The Highscore is: " + GameBoard.highScore);
                 }
-                if(GameBoard.won){
+                if (GameBoard.won) {
                     game.stop();
                     window.add(End_Panel);
                     ExplosionClip.start();
@@ -105,6 +105,8 @@ public class Menu extends JPanel implements ActionListener, MouseListener {
                 }
                 System.out.println("Game Is Running");
             }
+            System.out.println("Main Loop Running");
+        }
     }
 
     public Menu(JPanel panel, JPanel end_panel,JPanel T_panel,JPanel songLibrary){
