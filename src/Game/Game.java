@@ -2,14 +2,12 @@ package Game;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
-public class Game extends JPanel implements KeyListener,Runnable{
+public class Game extends JPanel implements KeyListener,Runnable, MouseListener {
     public static final int width = 1920;
     public static final int length = 1080;
-    public static final Font main = new Font("Arial",Font.BOLD,28);
     private Thread game;
     private boolean running;
     private BufferedImage image = new BufferedImage(width,length,BufferedImage.TYPE_INT_RGB); //no flicker
@@ -21,13 +19,6 @@ public class Game extends JPanel implements KeyListener,Runnable{
         addKeyListener(this);
 
         board = new GameBoard(width/2 - GameBoard.board_width/2,length -GameBoard.board_length-320);//center on x-axis and left 10 up from the screen
-
-        JButton btn = new JButton("Click Me!");
-        btn.setBounds(40, 40, 100, 50);
-        btn.addActionListener(e -> JOptionPane.showMessageDialog(this, "Button Clicked!"));
-        setLayout(null); // Use null layout to set absolute positions
-        add(btn);
-
     }
 
     private void update(){
@@ -126,4 +117,29 @@ public class Game extends JPanel implements KeyListener,Runnable{
         Keyboard.keyReleased(e);
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        JOptionPane.showConfirmDialog(null,"Hello There");
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

@@ -7,10 +7,12 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 
-public class Menu extends JPanel implements ActionListener {
+public class Menu extends JPanel implements ActionListener, MouseListener {
     private boolean StalNeedPlay = false;
     private boolean WetHandsNeedPlay = true;
     private static Clip WetHandsClip,StalClip,ExplosionClip;
@@ -23,7 +25,8 @@ public class Menu extends JPanel implements ActionListener {
     private static JLabel highScore;
     private static boolean isDead,isWon;
     private static boolean whileLoopRunning = true;
-    private static JPanel panel,End_Panel,tutorial_panel,SongLibrary;
+    public static JPanel panel;
+    private static JPanel End_Panel,tutorial_panel,SongLibrary;
     private JButton unmute, mute, start, exit, exit_tutorial,exitMusic, howToPlay,PlayAgain,MainMenu,Stal,Music,WetHands,nextSong,TileSize,ChangeToSquare,ChangeToCircle,ChangeToRounded;
     public static Game game;
     private Font font36 = new Font("Monospaced", Font.BOLD, 36);
@@ -210,7 +213,6 @@ public class Menu extends JPanel implements ActionListener {
         MainMenu = new JButton("<html> Main <br> Menu");
         ButtonCreator(MainMenu,1540, 490, 200, 200,end_panel,null,null,"src/res/MainMenuImage.jpg",null,null,null,true);
         //End of End Panel...
-
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -404,4 +406,28 @@ public class Menu extends JPanel implements ActionListener {
         }
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

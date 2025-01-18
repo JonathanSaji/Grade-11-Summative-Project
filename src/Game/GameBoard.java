@@ -1,13 +1,16 @@
 package Game;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
 import java.util.Random;
 
-public class GameBoard {
+public class GameBoard implements MouseListener {
     public static int arc_height = 30;
     public static int arc_width = 30;
     public static final int ROWS = 4;
@@ -52,7 +55,7 @@ public class GameBoard {
         loadHighScore();
         createBoardImage();
         start();
-
+        Menu.window.addMouseListener(this);
     }
 
     private void createSaveData(){
@@ -169,6 +172,13 @@ public class GameBoard {
 
         g.setColor(Color.yellow);
         g.drawString("2048 - Jonathan Saji©",640,100);
+
+        g.setColor(Color.red);
+        g.fillRect(400,400,150,100);
+        g.setColor(Color.white);
+        g.setFont(scoreFont);
+        g.drawString("MENU",415,460);
+
     }
 
     public void update(){
@@ -450,4 +460,40 @@ public class GameBoard {
         }
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        int clickX = e.getXOnScreen();
+        int clickY = e.getYOnScreen();
+
+        if(clickX > 400 && clickX < 400+150 && clickY > 400 && clickY < 400+100){
+            int input = JOptionPane.showConfirmDialog(null,"Do You Want to Leave \n Progress Will NOT BE SAVED","Quit To Menu?",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+            if(input == JOptionPane.YES_OPTION) {
+                Menu.window.remove(Menu.game);
+                Menu.window.add(Menu.panel);
+                Menu.game.stop();
+                Menu.window.revalidate();
+                Menu.window.repaint();
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        //we dont use
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        //we dont use
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        //we dont use
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        //we dont use
+    }
 }
